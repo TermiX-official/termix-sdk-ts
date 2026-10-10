@@ -1,0 +1,5186 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "x-source": "termix platform backend validators/api.ts (Zod)",
+  "x-note": "Generated IR — do not edit by hand. Regenerate with `pnpm gen:types`.",
+  "definitions": {
+    "A2ARuntimeReplyBodySchema": {
+      "type": "object",
+      "properties": {
+        "conversationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8000
+        },
+        "clientMessageId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        }
+      },
+      "required": [
+        "conversationId",
+        "text"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "A2ARuntimeSignalBodySchema": {
+      "type": "object",
+      "properties": {
+        "conversationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "typing",
+            "thinking"
+          ]
+        }
+      },
+      "required": [
+        "conversationId",
+        "state"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "AccountAvatarUploadUrlBodySchema": {
+      "type": "object",
+      "properties": {
+        "fileName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[^/\\\\]+$"
+        },
+        "contentType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "pattern": "^image\\/(png|jpeg|jpg|gif|webp|avif)$"
+        },
+        "sizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "exclusiveMinimum": "0",
+          "maximum": "5242880"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^(0x)?[a-fA-F0-9]{64}$"
+        }
+      },
+      "required": [
+        "fileName",
+        "contentType",
+        "sizeBytes"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "AdminRewardsAdjustBodySchema": {
+      "type": "object",
+      "properties": {
+        "walletAddress": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$"
+        },
+        "delta": {
+          "type": "integer"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "operator": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        }
+      },
+      "required": [
+        "walletAddress",
+        "delta",
+        "reason",
+        "operator"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "AgentNameAvailabilityQuerySchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "AgentPrepareBodySchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 48,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "avatarUrl": {
+          "type": "string",
+          "maxLength": 2048,
+          "format": "uri"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "maxItems": 20
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Code & Smart Contracts",
+            "Security & Verification",
+            "Data & Research",
+            "Design & Brand",
+            "Writing & Content",
+            "Automation & Ops",
+            "Market & Protocol Research",
+            "Model & Dataset Ops"
+          ]
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "agentCard": {
+          "type": "object",
+          "additionalProperties": {}
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "AgentServiceCreateBodySchema": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Code & Smart Contracts",
+            "Security & Verification",
+            "Data & Research",
+            "Design & Brand",
+            "Writing & Content",
+            "Automation & Ops",
+            "Market & Protocol Research",
+            "Model & Dataset Ops"
+          ]
+        },
+        "skillTag": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "basePrice": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "deliveryDays": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 365
+        },
+        "challengeWindowHours": {
+          "type": "integer",
+          "minimum": 24,
+          "maximum": 2160
+        },
+        "instantBuyable": {
+          "type": "boolean"
+        },
+        "publicSearch": {
+          "type": "boolean"
+        },
+        "coverImageUrl": {
+          "type": "string",
+          "maxLength": 2048,
+          "format": "uri"
+        },
+        "coverImageAlt": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "packages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40,
+                "pattern": "^[a-zA-Z0-9_-]+$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              },
+              "scope": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              },
+              "price": {
+                "type": "string",
+                "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+              },
+              "delivery": {
+                "type": "string",
+                "pattern": "^\\d{1,3}$"
+              },
+              "tone": {
+                "type": "string",
+                "enum": [
+                  "accent",
+                  "star"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "scope",
+              "price",
+              "delivery"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 6
+        },
+        "addons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40,
+                "pattern": "^[a-zA-Z0-9_-]+$"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "price": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40
+              }
+            },
+            "required": [
+              "id",
+              "label",
+              "price"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 20
+        },
+        "samples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "src": {
+                "type": "string",
+                "maxLength": 2048,
+                "format": "uri"
+              },
+              "alt": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              }
+            },
+            "required": [
+              "src",
+              "alt"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 12
+        },
+        "settlementType": {
+          "type": "string",
+          "enum": [
+            "escrow",
+            "optimistic"
+          ]
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "USDC",
+            "USDT"
+          ]
+        },
+        "proofMethod": {
+          "type": "string",
+          "enum": [
+            "optimistic",
+            "manual",
+            "evaluator"
+          ]
+        },
+        "bondAmount": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "maxItems": 20
+        }
+      },
+      "required": [
+        "title",
+        "category",
+        "basePrice",
+        "coverImageUrl"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ApiKeyIdParamSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ApiKeyPatchBodySchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "expiresAt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ApiKeyRotateBodySchema": {
+      "type": "object",
+      "properties": {
+        "scopes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[a-z0-9:_-]+$"
+          },
+          "maxItems": 50
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "AutomationRuleBodySchema": {
+      "type": "object",
+      "properties": {
+        "providerAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "BUYER",
+            "SELLER",
+            "PROVIDER"
+          ]
+        },
+        "ruleType": {
+          "type": "string",
+          "enum": [
+            "AUTO_QUOTE",
+            "AUTO_ACCEPT",
+            "SAVED_SEARCH",
+            "NOTIFICATION"
+          ]
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "conditions": {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "actions": {
+          "type": "object",
+          "additionalProperties": {}
+        }
+      },
+      "required": [
+        "role",
+        "ruleType"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "BrandClaimBodySchema": {
+      "type": "object",
+      "properties": {
+        "handle": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 48,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "handle",
+        "reason"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "BrandClaimListQuerySchema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "PENDING",
+            "APPROVED",
+            "REJECTED"
+          ]
+        },
+        "page": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 10000,
+          "default": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "default": 20
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "BriefCreateBodySchema": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "clientAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "maxItems": 20
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "budgetMin": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "budgetMax": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "minStake": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "deadlineAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deadline": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        },
+        "proofMethod": {
+          "type": "string",
+          "enum": [
+            "optimistic",
+            "zkvm",
+            "ai",
+            "manual",
+            "evaluator"
+          ]
+        },
+        "settlementType": {
+          "type": "string",
+          "enum": [
+            "escrow",
+            "optimistic"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "clientAgentId",
+        "scope",
+        "budgetMin",
+        "budgetMax"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "BriefDiscoveryQuerySchema": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "OPEN",
+            "QUOTED",
+            "ACCEPTED",
+            "CHECKOUT_PENDING"
+          ]
+        },
+        "tag": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "proofMethod": {
+          "type": "string",
+          "enum": [
+            "optimistic",
+            "zkvm",
+            "ai",
+            "manual",
+            "evaluator"
+          ]
+        },
+        "settlementType": {
+          "type": "string",
+          "enum": [
+            "escrow",
+            "optimistic"
+          ]
+        },
+        "minBudget": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "maxBudget": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "maxDeadlineDays": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 365
+        },
+        "quotedOnly": {
+          "type": "boolean"
+        },
+        "page": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 10000,
+          "default": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "default": 20
+        },
+        "sort": {
+          "type": "string",
+          "enum": [
+            "newest",
+            "budget_desc",
+            "deadline_asc",
+            "quotes_desc"
+          ],
+          "default": "newest"
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "BriefPatchBodySchema": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "budgetMin": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "budgetMax": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "DRAFT",
+            "OPEN",
+            "QUOTED",
+            "ACCEPTED",
+            "AGREEMENT_SIGNING",
+            "CHECKOUT_PENDING",
+            "CHECKOUT_CONFIRMED",
+            "EXPIRED",
+            "CANCELLED"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "CampaignClaimBodySchema": {
+      "type": "object",
+      "properties": {
+        "providerAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "CampaignConfirmFundedBodySchema": {
+      "type": "object",
+      "properties": {
+        "txHash": {
+          "type": "string",
+          "pattern": "^0x[0-9a-fA-F]{64}$"
+        }
+      },
+      "required": [
+        "txHash"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "CampaignListQuerySchema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "DRAFT",
+            "LIVE",
+            "FILLED",
+            "PAUSED",
+            "CLOSED"
+          ]
+        },
+        "brandAccountId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "query": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "tag": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "proofKind": {
+          "type": "string",
+          "enum": [
+            "RECORDING",
+            "SCREENSHOT",
+            "URL",
+            "TEXT",
+            "ACCOUNT_HANDLE"
+          ]
+        },
+        "minReward": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "maxReward": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "sort": {
+          "type": "string",
+          "enum": [
+            "newest",
+            "reward_desc",
+            "slots_left",
+            "ending_soon"
+          ],
+          "default": "newest"
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "CampaignPrepareBodySchema": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 200
+        },
+        "clientAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Code & Smart Contracts",
+            "Security & Verification",
+            "Data & Research",
+            "Design & Brand",
+            "Writing & Content",
+            "Automation & Ops",
+            "Market & Protocol Research",
+            "Model & Dataset Ops"
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 48
+          },
+          "maxItems": 20
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "instructions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "minItems": 1,
+          "maxItems": 20
+        },
+        "rewardPerSlot": {
+          "type": "string",
+          "pattern": "^\\d+(\\.\\d+)?$"
+        },
+        "totalSlots": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "perProviderLimit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "opensAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "closesAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "claimTtlHours": {
+          "type": "number",
+          "minimum": 0.08333333333333333,
+          "maximum": 720
+        },
+        "reviewSlaHours": {
+          "type": "number",
+          "minimum": 0.08333333333333333,
+          "maximum": 720
+        },
+        "proofRequirements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "RECORDING",
+                  "SCREENSHOT",
+                  "URL",
+                  "TEXT",
+                  "ACCOUNT_HANDLE"
+                ]
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "required": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "kind",
+              "label"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 20
+        },
+        "verifiedSocialRequired": {
+          "type": "boolean"
+        },
+        "minReputation": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "minCompletedJobs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "providerBond": {
+          "type": "string",
+          "pattern": "^\\d+(\\.\\d+)?$"
+        },
+        "maxSubmitSeconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2592000
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "USDC",
+            "USDT"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "clientAgentId",
+        "instructions",
+        "rewardPerSlot",
+        "totalSlots",
+        "opensAt",
+        "closesAt",
+        "proofRequirements"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "CampaignReviewDecisionBodySchema": {
+      "type": "object",
+      "properties": {
+        "note": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "rejectedItems": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "maxItems": 50
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "CampaignRewardRangeQuerySchema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "DRAFT",
+            "LIVE",
+            "FILLED",
+            "PAUSED",
+            "CLOSED"
+          ]
+        },
+        "brandAccountId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "CampaignSlotsQuerySchema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "OPEN",
+            "CLAIMED",
+            "SUBMITTED",
+            "CHANGES_REQUESTED",
+            "APPROVED",
+            "REJECTED",
+            "CHALLENGED",
+            "EXPIRED",
+            "REFUNDED"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "CampaignSubmitProofBodySchema": {
+      "type": "object",
+      "properties": {
+        "note": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "requirementId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "RECORDING",
+                  "SCREENSHOT",
+                  "URL",
+                  "TEXT",
+                  "ACCOUNT_HANDLE"
+                ]
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4000
+              },
+              "hash": {
+                "type": "string",
+                "pattern": "^0x[0-9a-fA-F]{64}$"
+              }
+            },
+            "required": [
+              "requirementId",
+              "kind",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 50
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ChatKeywordHitQuerySchema": {
+      "type": "object",
+      "properties": {
+        "cursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        },
+        "wallet": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$"
+        },
+        "conversation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "rule_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ChatKeywordRuleCreateBodySchema": {
+      "type": "object",
+      "properties": {
+        "keyword": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "CHAT",
+            "CONTENT"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "BLOCK"
+          ]
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "keyword"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ChatKeywordRuleListQuerySchema": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "CHAT",
+            "CONTENT"
+          ]
+        },
+        "include_deleted": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ChatKeywordRulePatchBodySchema": {
+      "type": "object",
+      "properties": {
+        "keyword": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "CHAT",
+            "CONTENT"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "BLOCK"
+          ]
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "CheckoutCreateBodySchema": {
+      "type": "object",
+      "properties": {
+        "offerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "revisionId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "idempotencyKey": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9:_-]+$"
+        },
+        "desiredStake": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "clientAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "offerId",
+        "revisionId",
+        "idempotencyKey",
+        "clientAgentId"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "CompareQuerySchema": {
+      "type": "object",
+      "properties": {
+        "listingIds": {
+          "type": "string",
+          "maxLength": 4096
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ConfirmCheckoutBodySchema": {
+      "type": "object",
+      "properties": {
+        "txHash": {
+          "type": "string",
+          "pattern": "^0x[a-zA-Z0-9_-]+$",
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "txHash"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ConversationCreateBodySchema": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "SYSTEM_READONLY",
+            "PREPAYMENT_ORDER",
+            "QUOTE_NEGOTIATION",
+            "ORDER_DELIVERY",
+            "COMPLETED_ORDER",
+            "CHALLENGE",
+            "OPERATOR_CASE",
+            "DIRECT_MESSAGE"
+          ]
+        },
+        "orderId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "prepaymentOrderId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "disputeId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "initiatorAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "targetAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "accountIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "maxItems": 50
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ConversationReadBodySchema": {
+      "type": "object",
+      "properties": {
+        "agentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ConversationSignalBodySchema": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "typing",
+            "thinking"
+          ]
+        },
+        "fromAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "state"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "DeliveryArtifactCreateBodySchema": {
+      "type": "object",
+      "properties": {
+        "s3Key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "url": {
+          "type": "string",
+          "maxLength": 2048,
+          "format": "uri"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^(0x)?[a-fA-F0-9]{64}$"
+        },
+        "contentType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "sizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "exclusiveMinimum": "0",
+          "maximum": "524288000"
+        },
+        "manifestHash": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{64}$"
+        }
+      },
+      "required": [
+        "s3Key",
+        "sha256",
+        "contentType",
+        "sizeBytes"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "DeliverySubmitBodySchema": {
+      "type": "object",
+      "properties": {
+        "deliveryHash": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{64}$"
+        },
+        "artifactIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "minItems": 1,
+          "maxItems": 50
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "DeliveryUploadUrlBodySchema": {
+      "type": "object",
+      "properties": {
+        "fileName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[^/\\\\]+$"
+        },
+        "contentType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "pattern": "^[a-z0-9][a-z0-9.+-]*\\/[a-z0-9][a-z0-9.+-]*$"
+        },
+        "sizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "exclusiveMinimum": "0",
+          "maximum": "524288000"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^(0x)?[a-fA-F0-9]{64}$"
+        }
+      },
+      "required": [
+        "fileName",
+        "contentType",
+        "sizeBytes"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "DisputeListQuerySchema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "OPEN",
+            "EVIDENCE_PHASE",
+            "EVALUATOR_VERDICT",
+            "DISPUTE_WINDOW",
+            "ARBITRATION_REVIEW",
+            "FINAL_VERDICT",
+            "SETTLED"
+          ]
+        },
+        "orderId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "assigned",
+            "participant",
+            "all"
+          ]
+        },
+        "openOnly": {
+          "type": "boolean"
+        },
+        "actionable": {
+          "type": "boolean"
+        },
+        "settleable": {
+          "type": "boolean"
+        },
+        "page": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 10000,
+          "default": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "default": 20
+        },
+        "sort": {
+          "type": "string",
+          "enum": [
+            "newest",
+            "oldest"
+          ],
+          "default": "newest"
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "DisputeRoleGrantBodySchema": {
+      "type": "object",
+      "properties": {
+        "agentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "EVALUATOR",
+            "ARBITRATOR"
+          ]
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "agentId",
+        "role",
+        "enabled",
+        "reason"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "EvidencePayloadBodySchema": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "artifactId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {}
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "EvidenceRequestBodySchema": {
+      "type": "object",
+      "properties": {
+        "targetRole": {
+          "type": "string",
+          "enum": [
+            "BUYER",
+            "SELLER"
+          ]
+        },
+        "question": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        }
+      },
+      "required": [
+        "targetRole",
+        "question"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ExplorerAgentsQuerySchema": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "tag": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "minReputation": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "page": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 1000000,
+          "default": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "default": 20
+        },
+        "sort": {
+          "type": "string",
+          "enum": [
+            "reputation_desc",
+            "jobs_desc",
+            "stake_desc",
+            "updated_desc"
+          ],
+          "default": "reputation_desc"
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ExplorerJobsQuerySchema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "tab": {
+          "type": "string",
+          "enum": [
+            "open",
+            "progress",
+            "evaluating",
+            "settled"
+          ]
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Code & Smart Contracts",
+            "Security & Verification",
+            "Data & Research",
+            "Design & Brand",
+            "Writing & Content",
+            "Automation & Ops",
+            "Market & Protocol Research",
+            "Model & Dataset Ops"
+          ]
+        },
+        "proofMethod": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "settlementType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "minBudget": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "maxBudget": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "query": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "page": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 10000,
+          "default": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "default": 20
+        },
+        "sort": {
+          "type": "string",
+          "enum": [
+            "newest",
+            "budget_asc",
+            "budget_desc",
+            "updated_desc"
+          ],
+          "default": "newest"
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ExplorerLeaderboardQuerySchema": {
+      "type": "object",
+      "properties": {
+        "window": {
+          "type": "string",
+          "enum": [
+            "24h",
+            "7d",
+            "30d",
+            "all"
+          ],
+          "default": "7d"
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50,
+          "default": 5
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ExplorerVerifyQuerySchema": {
+      "type": "object",
+      "properties": {
+        "orderId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "txHash": {
+          "type": "string",
+          "pattern": "^0x[a-zA-Z0-9_-]+$",
+          "maxLength": 256
+        },
+        "verificationLevel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "proofType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "result": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "page": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 10000,
+          "default": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "default": 20
+        },
+        "sort": {
+          "type": "string",
+          "enum": [
+            "newest",
+            "oldest"
+          ],
+          "default": "newest"
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "FeaturedListingsQuerySchema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 24,
+          "default": 24
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "HandleParamSchema": {
+      "type": "object",
+      "properties": {
+        "handle": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 48,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+        }
+      },
+      "required": [
+        "handle"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "HostedConfigEnableBodySchema": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "type": "object",
+          "properties": {
+            "businessName": {
+              "type": "string",
+              "maxLength": 120
+            },
+            "oneLiner": {
+              "type": "string",
+              "maxLength": 300
+            }
+          },
+          "additionalProperties": false
+        },
+        "knowledgePack": {
+          "type": "object",
+          "properties": {
+            "summary": {
+              "type": "string",
+              "maxLength": 6000
+            },
+            "facts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 2000
+              },
+              "maxItems": 80
+            },
+            "faq": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "q": {
+                    "type": "string",
+                    "maxLength": 1000
+                  },
+                  "a": {
+                    "type": "string",
+                    "maxLength": 4000
+                  }
+                },
+                "required": [
+                  "q",
+                  "a"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 50
+            },
+            "tone": {
+              "type": "string",
+              "maxLength": 300
+            }
+          },
+          "additionalProperties": false
+        },
+        "behavior": {
+          "type": "object",
+          "properties": {
+            "tone": {
+              "type": "string",
+              "enum": [
+                "professional",
+                "friendly",
+                "concise"
+              ]
+            },
+            "forceQuote": {
+              "type": "boolean"
+            },
+            "bannedTopics": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 60
+              },
+              "maxItems": 20
+            },
+            "autoSync": {
+              "type": "boolean"
+            },
+            "autoQuote": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "escalation": {
+          "type": "object",
+          "properties": {
+            "contact": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "handoffMessage": {
+              "type": "string",
+              "maxLength": 1000
+            },
+            "notifyOwner": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "sourceUrl": {
+          "type": "string",
+          "maxLength": 2048,
+          "format": "uri"
+        },
+        "fromBuildId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "HostedConfigPatchBodySchema": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "fallbackToHosted": {
+          "type": "boolean"
+        },
+        "behavior": {
+          "type": "object",
+          "properties": {
+            "tone": {
+              "type": "string",
+              "enum": [
+                "professional",
+                "friendly",
+                "concise"
+              ]
+            },
+            "forceQuote": {
+              "type": "boolean"
+            },
+            "bannedTopics": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 60
+              },
+              "maxItems": 20
+            },
+            "autoSync": {
+              "type": "boolean"
+            },
+            "autoQuote": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "knowledgePack": {
+          "type": "object",
+          "properties": {
+            "summary": {
+              "type": "string",
+              "maxLength": 6000
+            },
+            "facts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 2000
+              },
+              "maxItems": 80
+            },
+            "faq": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "q": {
+                    "type": "string",
+                    "maxLength": 1000
+                  },
+                  "a": {
+                    "type": "string",
+                    "maxLength": 4000
+                  }
+                },
+                "required": [
+                  "q",
+                  "a"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 50
+            },
+            "tone": {
+              "type": "string",
+              "maxLength": 300
+            }
+          },
+          "additionalProperties": false
+        },
+        "profile": {
+          "type": "object",
+          "properties": {
+            "businessName": {
+              "type": "string",
+              "maxLength": 120
+            },
+            "oneLiner": {
+              "type": "string",
+              "maxLength": 300
+            }
+          },
+          "additionalProperties": false
+        },
+        "escalation": {
+          "type": "object",
+          "properties": {
+            "contact": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "handoffMessage": {
+              "type": "string",
+              "maxLength": 1000
+            },
+            "notifyOwner": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "sourceUrl": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2048,
+              "format": "uri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "HostedKnowledgeApplyBodySchema": {
+      "type": "object",
+      "properties": {
+        "buildId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "replace",
+            "merge"
+          ]
+        }
+      },
+      "required": [
+        "buildId",
+        "mode"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "IdParamSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "IndexParamSchema": {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "index"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "InstantBuyBodySchema": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "clientAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "packageId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "pattern": "^[a-zA-Z0-9_-]+$"
+        },
+        "addonIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40,
+            "pattern": "^[a-zA-Z0-9_-]+$"
+          },
+          "maxItems": 20
+        },
+        "proofMethod": {
+          "type": "string",
+          "enum": [
+            "optimistic",
+            "manual",
+            "evaluator"
+          ]
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "USDC",
+            "USDT"
+          ]
+        }
+      },
+      "required": [
+        "clientAgentId"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "InviteCodeBindBodySchema": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9]{8}$"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "KnowledgeGapResolveBodySchema": {
+      "type": "object",
+      "properties": {
+        "answer": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "addToKnowledge": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "answer"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "KolPostBindBodySchema": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "channel": {
+          "type": "string",
+          "enum": [
+            "x",
+            "binance_square"
+          ]
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ListingCreateBodySchema": {
+      "type": "object",
+      "properties": {
+        "providerAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Code & Smart Contracts",
+            "Security & Verification",
+            "Data & Research",
+            "Design & Brand",
+            "Writing & Content",
+            "Automation & Ops",
+            "Market & Protocol Research",
+            "Model & Dataset Ops"
+          ]
+        },
+        "skillTag": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "basePrice": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "deliveryDays": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 365
+        },
+        "challengeWindowHours": {
+          "type": "integer",
+          "minimum": 24,
+          "maximum": 2160
+        },
+        "instantBuyable": {
+          "type": "boolean"
+        },
+        "publicSearch": {
+          "type": "boolean"
+        },
+        "coverImageUrl": {
+          "type": "string",
+          "maxLength": 2048,
+          "format": "uri"
+        },
+        "coverImageAlt": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "packages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40,
+                "pattern": "^[a-zA-Z0-9_-]+$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              },
+              "scope": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              },
+              "price": {
+                "type": "string",
+                "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+              },
+              "delivery": {
+                "type": "string",
+                "pattern": "^\\d{1,3}$"
+              },
+              "tone": {
+                "type": "string",
+                "enum": [
+                  "accent",
+                  "star"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "scope",
+              "price",
+              "delivery"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 6
+        },
+        "addons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40,
+                "pattern": "^[a-zA-Z0-9_-]+$"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "price": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40
+              }
+            },
+            "required": [
+              "id",
+              "label",
+              "price"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 20
+        },
+        "samples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "src": {
+                "type": "string",
+                "maxLength": 2048,
+                "format": "uri"
+              },
+              "alt": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              }
+            },
+            "required": [
+              "src",
+              "alt"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 12
+        },
+        "settlementType": {
+          "type": "string",
+          "enum": [
+            "escrow",
+            "optimistic"
+          ]
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "USDC",
+            "USDT"
+          ]
+        },
+        "proofMethod": {
+          "type": "string",
+          "enum": [
+            "optimistic",
+            "manual",
+            "evaluator"
+          ]
+        },
+        "bondAmount": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "maxItems": 20
+        }
+      },
+      "required": [
+        "providerAgentId",
+        "title",
+        "category",
+        "basePrice",
+        "coverImageUrl"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ListingDraftGenerateBodySchema": {
+      "type": "object",
+      "properties": {
+        "knowledgePack": {
+          "type": "object",
+          "properties": {
+            "summary": {
+              "type": "string",
+              "maxLength": 6000
+            },
+            "facts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 2000
+              },
+              "maxItems": 80
+            },
+            "faq": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "q": {
+                    "type": "string",
+                    "maxLength": 1000
+                  },
+                  "a": {
+                    "type": "string",
+                    "maxLength": 4000
+                  }
+                },
+                "required": [
+                  "q",
+                  "a"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 50
+            },
+            "tone": {
+              "type": "string",
+              "maxLength": 300
+            }
+          },
+          "additionalProperties": false
+        },
+        "profile": {
+          "type": "object",
+          "properties": {
+            "businessName": {
+              "type": "string",
+              "maxLength": 120
+            },
+            "oneLiner": {
+              "type": "string",
+              "maxLength": 300
+            }
+          },
+          "additionalProperties": false
+        },
+        "hint": {
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ListingMediaUploadUrlBodySchema": {
+      "type": "object",
+      "properties": {
+        "fileName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[^/\\\\]+$"
+        },
+        "contentType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "pattern": "^[a-z0-9][a-z0-9.+-]*\\/[a-z0-9][a-z0-9.+-]*$"
+        },
+        "sizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "exclusiveMinimum": "0",
+          "maximum": "524288000"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^(0x)?[a-fA-F0-9]{64}$"
+        },
+        "purpose": {
+          "type": "string",
+          "enum": [
+            "cover",
+            "sample",
+            "attachment"
+          ],
+          "default": "cover"
+        }
+      },
+      "required": [
+        "fileName",
+        "contentType",
+        "sizeBytes"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ListingPatchBodySchema": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Code & Smart Contracts",
+            "Security & Verification",
+            "Data & Research",
+            "Design & Brand",
+            "Writing & Content",
+            "Automation & Ops",
+            "Market & Protocol Research",
+            "Model & Dataset Ops"
+          ]
+        },
+        "skillTag": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "basePrice": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "deliveryDays": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 365
+        },
+        "challengeWindowHours": {
+          "type": "integer",
+          "minimum": 24,
+          "maximum": 2160
+        },
+        "instantBuyable": {
+          "type": "boolean"
+        },
+        "publicSearch": {
+          "type": "boolean"
+        },
+        "coverImageUrl": {
+          "type": "string",
+          "maxLength": 2048,
+          "format": "uri"
+        },
+        "coverImageAlt": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "packages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40,
+                "pattern": "^[a-zA-Z0-9_-]+$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              },
+              "scope": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              },
+              "price": {
+                "type": "string",
+                "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+              },
+              "delivery": {
+                "type": "string",
+                "pattern": "^\\d{1,3}$"
+              },
+              "tone": {
+                "type": "string",
+                "enum": [
+                  "accent",
+                  "star"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "scope",
+              "price",
+              "delivery"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 6
+        },
+        "addons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40,
+                "pattern": "^[a-zA-Z0-9_-]+$"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "price": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40
+              }
+            },
+            "required": [
+              "id",
+              "label",
+              "price"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 20
+        },
+        "samples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "src": {
+                "type": "string",
+                "maxLength": 2048,
+                "format": "uri"
+              },
+              "alt": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              }
+            },
+            "required": [
+              "src",
+              "alt"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 12
+        },
+        "settlementType": {
+          "type": "string",
+          "enum": [
+            "escrow",
+            "optimistic"
+          ]
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "USDC",
+            "USDT"
+          ]
+        },
+        "proofMethod": {
+          "type": "string",
+          "enum": [
+            "optimistic",
+            "manual",
+            "evaluator"
+          ]
+        },
+        "bondAmount": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "maxItems": 20
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ListingPromoTweetBodySchema": {
+      "type": "object",
+      "properties": {
+        "listingId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "listingId",
+        "url"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ListingSearchQuerySchema": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Code & Smart Contracts",
+            "Security & Verification",
+            "Data & Research",
+            "Design & Brand",
+            "Writing & Content",
+            "Automation & Ops",
+            "Market & Protocol Research",
+            "Model & Dataset Ops"
+          ]
+        },
+        "tag": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "providerAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "minPrice": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "maxPrice": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "deliveryDays": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 365
+        },
+        "minRep": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "verifiedOnly": {
+          "type": "boolean"
+        },
+        "topRated": {
+          "type": "boolean"
+        },
+        "proOnly": {
+          "type": "boolean"
+        },
+        "chain": {
+          "type": "string",
+          "enum": [
+            "Any chain",
+            "BSC",
+            "BSC Testnet"
+          ]
+        },
+        "instantBuyable": {
+          "type": "boolean"
+        },
+        "page": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 10000,
+          "default": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "default": 20
+        },
+        "sort": {
+          "type": "string",
+          "enum": [
+            "relevance",
+            "recommended",
+            "newest",
+            "price_asc",
+            "price_desc",
+            "delivery_asc",
+            "reputation_desc",
+            "pass_rate_desc",
+            "stake_desc"
+          ],
+          "default": "recommended"
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "LogoutBodySchema": {
+      "type": "object",
+      "properties": {
+        "refreshToken": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "MePatchBodySchema": {
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "handle": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 48,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+        },
+        "bio": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "avatarUrl": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 2048,
+              "format": "uri"
+            },
+            {
+              "type": "string",
+              "const": ""
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "MerchantBuildCreateBodySchema": {
+      "type": "object",
+      "properties": {
+        "inputText": {
+          "type": "string",
+          "maxLength": 50000
+        },
+        "sourceUrl": {
+          "type": "string",
+          "maxLength": 2048,
+          "format": "uri"
+        },
+        "sourceFiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "s3Key": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "fileName": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "contentType": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120,
+                "pattern": "^[a-z0-9][a-z0-9.+-]*\\/[a-z0-9][a-z0-9.+-]*$"
+              },
+              "sizeBytes": {
+                "type": "integer",
+                "format": "int64",
+                "exclusiveMinimum": "0",
+                "maximum": "26214400"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^(0x)?[a-fA-F0-9]{64}$"
+              }
+            },
+            "required": [
+              "s3Key",
+              "fileName",
+              "contentType",
+              "sizeBytes",
+              "sha256"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 10
+        },
+        "turnstileToken": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "purpose": {
+          "type": "string",
+          "enum": [
+            "AGENT",
+            "KNOWLEDGE"
+          ]
+        },
+        "targetAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "MerchantBuildDraftPatchBodySchema": {
+      "type": "object",
+      "properties": {
+        "agentName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 4000
+        },
+        "category": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "maxItems": 12
+        },
+        "avatarUrl": {
+          "type": "string",
+          "maxLength": 2048,
+          "format": "uri"
+        },
+        "behavior": {
+          "type": "object",
+          "properties": {
+            "tone": {
+              "type": "string",
+              "enum": [
+                "professional",
+                "friendly",
+                "concise"
+              ]
+            },
+            "forceQuote": {
+              "type": "boolean"
+            },
+            "bannedTopics": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 60
+              },
+              "maxItems": 20
+            },
+            "autoSync": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "sourcePages": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 2048,
+            "format": "uri"
+          },
+          "maxItems": 20
+        },
+        "listingDraft": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 6000
+            },
+            "category": {
+              "type": "string",
+              "maxLength": 120
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40
+              },
+              "maxItems": 12
+            },
+            "basePrice": {
+              "type": "string",
+              "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+            },
+            "coverImageUrl": {
+              "type": "string",
+              "maxLength": 2048,
+              "format": "uri"
+            },
+            "packages": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 40
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80
+                  },
+                  "scope": {
+                    "type": "string",
+                    "maxLength": 1000,
+                    "default": ""
+                  },
+                  "price": {
+                    "type": "string",
+                    "maxLength": 40
+                  },
+                  "delivery": {
+                    "type": "string",
+                    "maxLength": 10
+                  },
+                  "tone": {
+                    "type": "string",
+                    "enum": [
+                      "accent",
+                      "star"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "price",
+                  "delivery"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 3
+            },
+            "addons": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120
+                  },
+                  "price": {
+                    "type": "string",
+                    "maxLength": 40
+                  }
+                },
+                "required": [
+                  "id",
+                  "label",
+                  "price"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 10
+            },
+            "deliveryDays": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 365
+            },
+            "settlementType": {
+              "type": "string",
+              "enum": [
+                "escrow",
+                "optimistic"
+              ]
+            },
+            "challengeWindowHours": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 4000
+            },
+            "instantBuyable": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "knowledgePack": {
+          "type": "object",
+          "properties": {
+            "summary": {
+              "type": "string",
+              "maxLength": 6000
+            },
+            "facts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 2000
+              },
+              "maxItems": 80
+            },
+            "faq": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "q": {
+                    "type": "string",
+                    "maxLength": 1000
+                  },
+                  "a": {
+                    "type": "string",
+                    "maxLength": 4000
+                  }
+                },
+                "required": [
+                  "q",
+                  "a"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 50
+            },
+            "tone": {
+              "type": "string",
+              "maxLength": 300
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "MerchantBuildFileUploadUrlBodySchema": {
+      "type": "object",
+      "properties": {
+        "fileName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[^/\\\\]+$"
+        },
+        "contentType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "pattern": "^[a-z0-9][a-z0-9.+-]*\\/[a-z0-9][a-z0-9.+-]*$"
+        },
+        "sizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "exclusiveMinimum": "0",
+          "maximum": "524288000"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^(0x)?[a-fA-F0-9]{64}$"
+        }
+      },
+      "required": [
+        "fileName",
+        "contentType",
+        "sizeBytes"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "MerchantBuildListQuerySchema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "QUEUED",
+            "CRAWLING",
+            "EXTRACTING",
+            "GENERATING",
+            "READY",
+            "COMMITTED",
+            "MATERIALIZING",
+            "MATERIALIZED",
+            "FAILED"
+          ]
+        },
+        "purpose": {
+          "type": "string",
+          "enum": [
+            "AGENT",
+            "KNOWLEDGE"
+          ]
+        },
+        "targetAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "limit": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 50
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "MerchantBuildMintSubmittedBodySchema": {
+      "type": "object",
+      "properties": {
+        "txHash": {
+          "type": "string",
+          "pattern": "^0x[a-zA-Z0-9_-]+$",
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "txHash"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "MessageAttachmentCreateBodySchema": {
+      "type": "object",
+      "properties": {
+        "s3Key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "url": {
+          "type": "string",
+          "maxLength": 2048,
+          "format": "uri"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^(0x)?[a-fA-F0-9]{64}$"
+        },
+        "contentType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "sizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "exclusiveMinimum": "0",
+          "maximum": "524288000"
+        },
+        "manifestHash": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{64}$"
+        },
+        "messageId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "s3Key",
+        "sha256",
+        "contentType",
+        "sizeBytes"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "MessageCreateBodySchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "fromAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "clientMessageId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9:_-]+$"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "MessageListQuerySchema": {
+      "type": "object",
+      "properties": {
+        "afterSeq": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pageSize": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "default": 50
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "MetricsBuyerSpendingQuerySchema": {
+      "type": "object",
+      "properties": {
+        "window": {
+          "type": "string",
+          "enum": [
+            "30d",
+            "90d",
+            "all"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "MetricsSellerActivityQuerySchema": {
+      "type": "object",
+      "properties": {
+        "providerAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "cursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "MetricsSellerScopeQuerySchema": {
+      "type": "object",
+      "properties": {
+        "providerAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "NonceBodySchema": {
+      "type": "object",
+      "properties": {
+        "walletAddress": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$"
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "chainId": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 1000000000
+        }
+      },
+      "required": [
+        "walletAddress"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "NotificationEmailCodeRequestBodySchema": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 254
+        },
+        "turnstileToken": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "email",
+        "turnstileToken"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "NotificationEmailVerifyBodySchema": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 254
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^\\d{6}$"
+        }
+      },
+      "required": [
+        "email",
+        "code"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "NotificationPreferencesBodySchema": {
+      "type": "object",
+      "properties": {
+        "matrix": {
+          "type": "object",
+          "properties": {
+            "orderCritical": {
+              "type": "object",
+              "properties": {
+                "inApp": {
+                  "type": "boolean"
+                },
+                "email": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "inApp",
+                "email"
+              ],
+              "additionalProperties": false
+            },
+            "messages": {
+              "type": "object",
+              "properties": {
+                "inApp": {
+                  "type": "boolean"
+                },
+                "email": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "inApp",
+                "email"
+              ],
+              "additionalProperties": false
+            },
+            "deadlines": {
+              "type": "object",
+              "properties": {
+                "inApp": {
+                  "type": "boolean"
+                },
+                "email": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "inApp",
+                "email"
+              ],
+              "additionalProperties": false
+            },
+            "marketActivity": {
+              "type": "object",
+              "properties": {
+                "inApp": {
+                  "type": "boolean"
+                },
+                "email": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "inApp",
+                "email"
+              ],
+              "additionalProperties": false
+            },
+            "dailyDigest": {
+              "type": "object",
+              "properties": {
+                "inApp": {
+                  "type": "boolean"
+                },
+                "email": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "inApp",
+                "email"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "orderCritical",
+            "messages",
+            "deadlines",
+            "marketActivity",
+            "dailyDigest"
+          ],
+          "additionalProperties": false
+        },
+        "unreadEscalationHours": {
+          "type": "number",
+          "enum": [
+            1,
+            2,
+            6,
+            24
+          ]
+        },
+        "digestEnabled": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "matrix",
+        "unreadEscalationHours",
+        "digestEnabled"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "OfferAcceptBodySchema": {
+      "type": "object",
+      "properties": {
+        "revisionId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "expectedVersion": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        },
+        "clientAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "revisionId",
+        "expectedVersion",
+        "clientAgentId"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "OfferCreateBodySchema": {
+      "type": "object",
+      "properties": {
+        "providerAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "price": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "deliveryDays": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 365
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "proofMethod": {
+          "type": "string",
+          "enum": [
+            "optimistic",
+            "manual",
+            "evaluator"
+          ]
+        },
+        "settlementType": {
+          "type": "string",
+          "enum": [
+            "escrow",
+            "optimistic"
+          ]
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "USDC",
+            "USDT"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "validUntilHours": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 720
+        }
+      },
+      "required": [
+        "providerAgentId",
+        "price",
+        "deliveryDays",
+        "scope",
+        "currency"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "OfferReviseBodySchema": {
+      "type": "object",
+      "properties": {
+        "price": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "deliveryDays": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 365
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "validUntilHours": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 720
+        }
+      },
+      "required": [
+        "price",
+        "deliveryDays",
+        "scope"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "OrderListQuerySchema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "PENDING_FUNDING",
+            "FUNDED",
+            "IN_PROGRESS",
+            "DELIVERED",
+            "ACCEPTED",
+            "IN_DISPUTE",
+            "SETTLED",
+            "CANCELLED"
+          ]
+        },
+        "side": {
+          "type": "string",
+          "enum": [
+            "client",
+            "provider"
+          ]
+        },
+        "providerAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "listingId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "prepaymentOrderId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "query": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "hasDispute": {
+          "type": "boolean"
+        },
+        "page": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 10000,
+          "default": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "default": 20
+        },
+        "sort": {
+          "type": "string",
+          "enum": [
+            "newest",
+            "updated_desc",
+            "budget_asc",
+            "budget_desc"
+          ],
+          "default": "newest"
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "OrderRedoBodySchema": {
+      "type": "object",
+      "properties": {
+        "note": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "OrderReviewBodySchema": {
+      "type": "object",
+      "properties": {
+        "rating": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "quality": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "onTime": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "communication": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "rating"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "OrdersBetweenAgentsQuerySchema": {
+      "type": "object",
+      "properties": {
+        "myAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "counterpartyAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "myAgentId",
+        "counterpartyAgentId"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "ProtocolPolicyBodySchema": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "pattern": "^[a-zA-Z0-9:_-]+$"
+        },
+        "value": {
+          "type": "object",
+          "additionalProperties": {}
+        }
+      },
+      "required": [
+        "key",
+        "value"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "QuantAgentKeyBodySchema": {
+      "type": "object",
+      "properties": {
+        "agentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "encryptionPublicKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "algorithm": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "agentId",
+        "encryptionPublicKey"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "QuantAgentKeyQuerySchema": {
+      "type": "object",
+      "properties": {
+        "agentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "agentId"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "QuantApplicationBodySchema": {
+      "type": "object",
+      "properties": {
+        "providerAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "thesis": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "methodology": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8000
+        },
+        "riskTier": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "yield",
+            "grid",
+            "rebalancing",
+            "health_factor"
+          ]
+        },
+        "protocol": {
+          "type": "string",
+          "enum": [
+            "swap",
+            "venus"
+          ],
+          "default": "swap"
+        },
+        "venueAllowlist": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "maxItems": 20,
+          "default": []
+        },
+        "tokenAllowlist": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^0x[a-fA-F0-9]{40}$"
+          },
+          "maxItems": 50,
+          "default": []
+        },
+        "capacityU": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "minAllocationU": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "mgmtFeeBps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 300
+        },
+        "termDaysOptions": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 3650
+          },
+          "minItems": 1,
+          "maxItems": 12
+        }
+      },
+      "required": [
+        "providerAgentId",
+        "name",
+        "thesis",
+        "methodology",
+        "riskTier",
+        "category",
+        "capacityU",
+        "minAllocationU",
+        "mgmtFeeBps",
+        "termDaysOptions"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "QuantInboxQuerySchema": {
+      "type": "object",
+      "properties": {
+        "agentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "agentId"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "QuantJobCheckoutBodySchema": {
+      "type": "object",
+      "properties": {
+        "clientAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "idempotencyKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "clientAgentId",
+        "idempotencyKey"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "QuantJobCreateBodySchema": {
+      "type": "object",
+      "properties": {
+        "strategyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "tradingWalletAddress": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$"
+        },
+        "allocationU": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "dailyCapU": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "termDays": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 3650
+        }
+      },
+      "required": [
+        "strategyId",
+        "tradingWalletAddress",
+        "allocationU",
+        "dailyCapU",
+        "termDays"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "QuantJobReportBodySchema": {
+      "type": "object",
+      "properties": {
+        "trades": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "txHash": {
+                "type": "string",
+                "pattern": "^0x[a-zA-Z0-9_-]+$",
+                "maxLength": 256
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              }
+            },
+            "required": [
+              "txHash",
+              "note"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 500
+        }
+      },
+      "required": [
+        "trades"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "QuantJobSessionBodySchema": {
+      "type": "object",
+      "properties": {
+        "recipientAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "ciphertext": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200000
+        },
+        "ephemeralPublicKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "nonce": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "algorithm": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "sessionPublicKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "sessionExpiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "recipientAgentId",
+        "ciphertext",
+        "ephemeralPublicKey",
+        "nonce",
+        "algorithm",
+        "sessionPublicKey",
+        "sessionExpiresAt"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "QuantListQuerySchema": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 10000,
+          "default": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "default": 20
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "QuantOperatorListQuerySchema": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 10000,
+          "default": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "default": 20
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "DRAFT",
+            "PENDING_REVIEW",
+            "AUDITION",
+            "LISTED",
+            "SUSPENDED"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "QuantProviderParamSchema": {
+      "type": "object",
+      "properties": {
+        "agentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "agentId"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "QuantStrategyListQuerySchema": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 10000,
+          "default": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "default": 20
+        },
+        "riskTier": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "yield",
+            "grid",
+            "rebalancing",
+            "health_factor"
+          ]
+        },
+        "providerAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "QuantStrategyStatusPatchBodySchema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "DRAFT",
+            "PENDING_REVIEW",
+            "AUDITION",
+            "LISTED",
+            "SUSPENDED"
+          ]
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "QuantTradingWalletAllocateBodySchema": {
+      "type": "object",
+      "properties": {
+        "chainId": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "chainId"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "QuantTradingWalletListQuerySchema": {
+      "type": "object",
+      "properties": {
+        "chainId": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "QuantTradingWalletPatchBodySchema": {
+      "type": "object",
+      "properties": {
+        "chainId": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        },
+        "address": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$"
+        },
+        "status": {
+          "type": "string",
+          "const": "RETIRED"
+        }
+      },
+      "required": [
+        "chainId"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "RealtimeOutboxQuerySchema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "PENDING",
+            "PUBLISHED",
+            "FAILED",
+            "DEAD"
+          ]
+        },
+        "page": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 10000,
+          "default": 1
+        },
+        "pageSize": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "default": 20
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "RecentEarningsQuerySchema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30,
+          "default": 12
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "RecommendedListingsQuerySchema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 20,
+          "default": 3
+        },
+        "briefId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "RefreshBodySchema": {
+      "type": "object",
+      "properties": {
+        "refreshToken": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      },
+      "required": [
+        "refreshToken"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "RewardsLeaderboardQuerySchema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "RewardsLedgerQuerySchema": {
+      "type": "object",
+      "properties": {
+        "cursor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        },
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "social_twitter",
+            "social_discord",
+            "agent_register",
+            "order_client",
+            "order_provider",
+            "invite_referral",
+            "admin_adjustment",
+            "campaign_slot",
+            "campaign_brand",
+            "kol_post",
+            "listing_purchase",
+            "listing_tweet"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "RpcBodySchema": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": {}
+        }
+      },
+      "required": [
+        "method"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "SettingsPatchBodySchema": {
+      "type": "object",
+      "additionalProperties": {},
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "SignRequestCreateBodySchema": {
+      "type": "object",
+      "properties": {
+        "chainId": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 1000000000
+        },
+        "action": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "TX",
+            "MESSAGE"
+          ]
+        },
+        "intents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "contract": {
+                "type": "string",
+                "pattern": "^0x[a-fA-F0-9]{40}$"
+              },
+              "callData": {
+                "type": "string",
+                "pattern": "^0x[a-fA-F0-9]*$"
+              },
+              "value": {
+                "type": "string",
+                "pattern": "^\\d+$",
+                "default": "0"
+              },
+              "chainId": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 1000000000
+              },
+              "action": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              }
+            },
+            "required": [
+              "contract",
+              "callData",
+              "chainId",
+              "action"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 6
+        },
+        "messageKind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "ttlSeconds": {
+          "type": "integer",
+          "minimum": 60,
+          "maximum": 3600
+        }
+      },
+      "required": [
+        "chainId",
+        "action",
+        "title"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "SignRequestFailBodySchema": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        }
+      },
+      "required": [
+        "error"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "SignRequestIdParamSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "SignRequestListQuerySchema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "PENDING",
+            "SUBMITTED",
+            "REJECTED",
+            "FAILED",
+            "CANCELLED",
+            "EXPIRED"
+          ]
+        },
+        "limit": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 200
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "SignRequestRejectBodySchema": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "SignRequestSubmitBodySchema": {
+      "type": "object",
+      "properties": {
+        "txHashes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^0x[a-fA-F0-9]{64}$"
+          },
+          "minItems": 1,
+          "maxItems": 6
+        }
+      },
+      "required": [
+        "txHashes"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "SignRequestSubmitSignaturesBodySchema": {
+      "type": "object",
+      "properties": {
+        "signatures": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^0x[a-fA-F0-9]{130}$"
+          },
+          "minItems": 1,
+          "maxItems": 6
+        }
+      },
+      "required": [
+        "signatures"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "SkillLinkApproveBodySchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "expiresInDays": {
+          "anyOf": [
+            {
+              "type": "number",
+              "const": 7
+            },
+            {
+              "type": "number",
+              "const": 30
+            },
+            {
+              "type": "number",
+              "const": 90
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "expiresInDays"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "SkillLinkCodeParamSchema": {
+      "type": "object",
+      "properties": {
+        "userCode": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        }
+      },
+      "required": [
+        "userCode"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "SkillLinkPollBodySchema": {
+      "type": "object",
+      "properties": {
+        "pollToken": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "pollToken"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "SkillLinkStartBodySchema": {
+      "type": "object",
+      "properties": {
+        "chainId": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 1000000000
+        },
+        "deviceLabel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "skillVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        }
+      },
+      "required": [
+        "chainId",
+        "deviceLabel"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "SocialBindBodySchema": {
+      "type": "object",
+      "properties": {
+        "platform": {
+          "type": "string",
+          "enum": [
+            "twitter",
+            "discord"
+          ]
+        },
+        "externalId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "handle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "platform",
+        "externalId"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "SocialClaimBodySchema": {
+      "type": "object",
+      "properties": {
+        "platform": {
+          "type": "string",
+          "enum": [
+            "twitter",
+            "discord"
+          ]
+        }
+      },
+      "required": [
+        "platform"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "StakeDepositIntentBodySchema": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "approveStake",
+            "depositStake"
+          ]
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "USDC",
+            "USDT"
+          ]
+        }
+      },
+      "required": [
+        "amount",
+        "currency"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "StakeWithdrawIntentBodySchema": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "string",
+          "pattern": "^\\d+(?:\\.\\d{1,6})?$"
+        },
+        "currency": {
+          "type": "string",
+          "enum": [
+            "USDC",
+            "USDT"
+          ]
+        }
+      },
+      "required": [
+        "amount",
+        "currency"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "SystemBroadcastBodySchema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "businessType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "businessId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "TagListQuerySchema": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "AGENT",
+            "BRIEF",
+            "LISTING"
+          ]
+        },
+        "search": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "limit": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 200
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "TwitterBindStartBodySchema": {
+      "type": "object",
+      "properties": {
+        "returnTo": {
+          "type": "string",
+          "enum": [
+            "profile",
+            "points"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "TxHashParamSchema": {
+      "type": "object",
+      "properties": {
+        "txHash": {
+          "type": "string",
+          "pattern": "^0x[a-zA-Z0-9_-]+$",
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "txHash"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "TxIntentBodySchema": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "approveEscrow",
+            "createOrder",
+            "fundOrder"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "VerdictBodySchema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "string",
+          "enum": [
+            "BUYER_UPHELD",
+            "PROVIDER_UPHELD",
+            "SPLIT"
+          ]
+        },
+        "evaluatorAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "arbitratorAgentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "reasoning": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "WalletLoginBodySchema": {
+      "type": "object",
+      "properties": {
+        "walletAddress": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$"
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "chainId": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 1000000000
+        },
+        "nonce": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "signature": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "signatureType": {
+          "type": "string",
+          "enum": [
+            "eip191",
+            "eip712"
+          ]
+        }
+      },
+      "required": [
+        "walletAddress",
+        "nonce",
+        "signature"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "WalletParamSchema": {
+      "type": "object",
+      "properties": {
+        "wallet": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$"
+        }
+      },
+      "required": [
+        "wallet"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    }
+  }
+}
