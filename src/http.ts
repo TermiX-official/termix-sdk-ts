@@ -59,6 +59,26 @@ function safeJson(text: string): unknown {
   }
 }
 
+function combineSignals(signals: AbortSignal[]): { signal: AbortSignal; dispose: () => void } {
+  const ctrl = new AbortController();
+  const attached: AbortSignal[] = [];
+  const abort = () => ctrl.abort();
+  for (const signal of signals) {
+    if (signal.aborted) {
+      abort();
+      break;
+    }
+    signal.addEventListener("abort", abort, { once: true });
+    attached.push(signal);
+  }
+  return {
+    signal: ctrl.signal,
+    dispose: () => {
+      for (const signal of attached) signal.removeEventListener("abort", abort);
+    },
+  };
+}
+
 async function backoff(attempt: number): Promise<void> {
   const base = Math.min(1000 * 2 ** (attempt - 1), 8000);
   const jitter = Math.floor(Math.random() * 250);
@@ -118,6 +138,7 @@ export class HttpClient {
 
       const ctrl = new AbortController();
       const timer = setTimeout(() => ctrl.abort(), this.opts.timeoutMs ?? 30_000);
+      const combined = o.signal ? combineSignals([o.signal, ctrl.signal]) : undefined;
       const started = Date.now();
       try {
         for (const i of this.opts.interceptors ?? []) {
@@ -127,7 +148,7 @@ export class HttpClient {
           method,
           headers,
           body: o.body !== undefined ? JSON.stringify(o.body) : undefined,
-          signal: o.signal ?? ctrl.signal,
+          signal: combined?.signal ?? ctrl.signal,
         });
         const durationMs = Date.now() - started;
         for (const i of this.opts.interceptors ?? []) {
@@ -165,6 +186,7 @@ export class HttpClient {
         );
       } finally {
         clearTimeout(timer);
+        combined?.dispose();
       }
     }
   }
