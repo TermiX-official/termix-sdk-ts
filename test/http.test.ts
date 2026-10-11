@@ -77,4 +77,22 @@ describe("HttpClient", () => {
     await http.get("/p");
     expect(seen[0]?.authorization).toBe("<redacted>");
   });
+
+  it("keeps the request timeout when a caller signal is provided", async () => {
+    const caller = new AbortController();
+    const fetchImpl = ((_input: string | URL | Request, init?: RequestInit) =>
+      new Promise<Response>((_resolve, reject) => {
+        init?.signal?.addEventListener(
+          "abort",
+          () => reject(new DOMException("The operation was aborted", "AbortError")),
+          { once: true },
+        );
+      })) as typeof fetch;
+    const http = new HttpClient({ baseUrl: base, fetchImpl, timeoutMs: 10, maxRetries: 0 });
+
+    await expect(http.get("/slow", { signal: caller.signal, idempotent: false })).rejects.toThrow(
+      "request timeout",
+    );
+    expect(caller.signal.aborted).toBe(false);
+  });
 });
