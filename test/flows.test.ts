@@ -137,3 +137,45 @@ describe("flows.deliver + settle (mode B)", () => {
     expect((res.result as { status: string }).status).toBe("DELIVERED");
   });
 });
+
+describe("flows.openDispute", () => {
+  it("mode B awaits bondApproval receipt before broadcasting openChallenge", async () => {
+    let orderStatus = "DELIVERED";
+    const { fetch } = mockFetch({
+      "POST /orders/o1/disputes": () => jsonResponse({
+        bondApprovalTxIntent: intent("approveBond"),
+        openChallenge: intent("openChallenge"),
+      }),
+      "GET /orders/o1": () => {
+        const cur = orderStatus;
+        orderStatus = "IN_DISPUTE";
+        return jsonResponse({ id: "o1", status: cur, budget: "10", currency: "USDC" });
+      },
+    });
+    const signer = mockSigner({ withReceipt: true });
+    const client = new TermixClient({ baseUrl: base, fetchImpl: fetch, signer });
+    const res = await client.flows.openDispute("o1", { autoSign: true, wait: fastWait });
+    expect(res.txHashes.length).toBe(2);
+    expect((res.result as { status: string }).status).toBe("IN_DISPUTE");
+    const approveSend = signer.events.indexOf("send:0xddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd1");
+    const approveReceipt = signer.events.indexOf("receipt:0xddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd1");
+    const openSend = signer.events.indexOf("send:0xddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd2");
+    expect(approveSend).toBeGreaterThanOrEqual(0);
+    expect(approveReceipt).toBeGreaterThan(approveSend);
+    expect(openSend).toBeGreaterThan(approveReceipt);
+  });
+
+  it("mode A returns both dispute intents without broadcasting", async () => {
+    const { fetch } = mockFetch({
+      "POST /orders/o1/disputes": () => jsonResponse({
+        bondApprovalTxIntent: intent("approveBond"),
+        openChallenge: intent("openChallenge"),
+      }),
+    });
+    const client = new TermixClient({ baseUrl: base, fetchImpl: fetch });
+    const res = await client.flows.openDispute("o1");
+    expect(res.intents.length).toBe(2);
+    expect(res.txHashes.length).toBe(0);
+  });
+});
+

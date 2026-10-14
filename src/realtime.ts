@@ -10,7 +10,7 @@ export interface SseSubscription {
   close(): void;
 }
 export interface SubscribeOptions {
-  onEvent: (e: RealtimeEvent) => void;
+  onEvent: (e: RealtimeEvent) => void | Promise<void>;
   onError?: (err: unknown) => void;
   signal?: AbortSignal;
 }
@@ -48,7 +48,7 @@ export class RealtimeResource {
             const raw = buffer.slice(0, idx);
             buffer = buffer.slice(idx + 2);
             const parsed = parseEvent(raw);
-            if (parsed) opts.onEvent(parsed);
+            if (parsed) await opts.onEvent(parsed);
           }
         }
       } catch (err) {

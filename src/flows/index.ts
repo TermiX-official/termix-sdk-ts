@@ -217,9 +217,15 @@ export class Flows {
     const intents = extractIntents(prep);
     const txHashes: string[] = [];
     if (autoSign) {
-      for (const intent of intents) {
+      for (let i = 0; i < intents.length; i++) {
+        const intent = intents[i]!;
         const h = await this.broadcast(intent, true);
-        if (h) txHashes.push(h);
+        if (h) {
+          txHashes.push(h);
+          if (i < intents.length - 1 && this.client.signer?.waitForReceipt) {
+            await this.client.signer.waitForReceipt(h, intent.chainId);
+          }
+        }
       }
     }
     if (!autoSign || txHashes.length === 0) return { intents, txHashes };
